@@ -1,14 +1,15 @@
 package com.abin.lee.retry.strategy.test;
 
 import com.github.rholder.retry.*;
-import com.google.common.base.Predicates;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 /**
  * Created by abin on 2018/6/27.
@@ -22,9 +23,11 @@ public class RetryStrategyTest {
     public void testRetry1() throws InterruptedException {
 
         Retryer<String> retryer = RetryerBuilder.<String>newBuilder()
-                .retryIfResult(Predicates.equalTo("success"))
+//                .retryIfResult(result -> Objects.equals(result, "success"))
+                .retryIfResult(result -> Objects.equals(result, "failure"))
                 .retryIfExceptionOfType(IOException.class)
-                .withWaitStrategy(WaitStrategies.exponentialWait(1000, 60, TimeUnit.SECONDS))//multiplier单位固定是ms，maximumTime最大等待时间
+//                .withWaitStrategy(WaitStrategies.exponentialWait(1000, 60, TimeUnit.SECONDS))//multiplier单位固定是ms，maximumTime最大等待时间
+                .withWaitStrategy(WaitStrategies.fixedWait(3, TimeUnit.SECONDS))//multiplier单位固定是ms，maximumTime最大等待时间
                 .withStopStrategy(StopStrategies.stopAfterAttempt(5))
                 .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(5, TimeUnit.SECONDS))//方法执行时间超过该值，直接抛错
                 .withRetryListener(new RetryListener() {
@@ -33,8 +36,8 @@ public class RetryStrategyTest {
                         long AttemptNumber = attempt.getAttemptNumber();
                         long DelaySinceFirstAttempt = attempt.getDelaySinceFirstAttempt();
                         String result = null;
-//                        if(null != attempt.getResult())
-//                            result = attempt.getResult();
+                        if(null != attempt.getResult())
+                            result = attempt.getResult();
                         Throwable exceptionCause = null;
 //                        if(null != attempt.getExceptionCause())
 //                            exceptionCause = attempt.getExceptionCause();

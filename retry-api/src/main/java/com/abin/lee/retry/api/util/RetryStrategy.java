@@ -6,6 +6,7 @@ import com.google.common.base.Predicates;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -19,9 +20,11 @@ public class RetryStrategy {
     public static void main(String[] args) throws Exception {
 
         Retryer<Boolean> retryer = RetryerBuilder.<Boolean>newBuilder()
-                .retryIfResult(Predicates.equalTo(Boolean.TRUE))
+//                .retryIfResult(Predicates.equalTo(false))
+                .retryIfResult(result -> Objects.equals(result, false))
                 .retryIfExceptionOfType(IOException.class)
-                .withWaitStrategy(WaitStrategies.exponentialWait(1000, 30, TimeUnit.SECONDS))
+//                .withWaitStrategy(WaitStrategies.exponentialWait(1000, 30, TimeUnit.SECONDS))//multiplier单位固定是ms，maximumTime最大等待时间
+                .withWaitStrategy(WaitStrategies.fixedWait(3, TimeUnit.SECONDS))//multiplier单位固定是ms，maximumTime最大等待时间
                 .withStopStrategy(StopStrategies.stopAfterAttempt(5))
                 .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(5, TimeUnit.SECONDS))//方法执行时间超过该值，直接抛错
                 .withRetryListener(new RetryListener() {
