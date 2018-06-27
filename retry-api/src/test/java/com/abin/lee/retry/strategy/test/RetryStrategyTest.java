@@ -23,8 +23,8 @@ public class RetryStrategyTest {
 
         Retryer<String> retryer = RetryerBuilder.<String>newBuilder()
                 .retryIfResult(Predicates.equalTo("success"))
-//                .retryIfExceptionOfType(IOException.class)
-                .withWaitStrategy(WaitStrategies.exponentialWait(1000, 10, TimeUnit.SECONDS))
+                .retryIfExceptionOfType(IOException.class)
+                .withWaitStrategy(WaitStrategies.exponentialWait(1000, 60, TimeUnit.SECONDS))//multiplier单位固定是ms，maximumTime最大等待时间
                 .withStopStrategy(StopStrategies.stopAfterAttempt(5))
                 .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(5, TimeUnit.SECONDS))//方法执行时间超过该值，直接抛错
                 .withRetryListener(new RetryListener() {
@@ -36,9 +36,9 @@ public class RetryStrategyTest {
 //                        if(null != attempt.getResult())
 //                            result = attempt.getResult();
                         Throwable exceptionCause = null;
-                        if(null != attempt.getExceptionCause())
-                            exceptionCause = attempt.getExceptionCause();
-                        System.out.println("AttemptNumber=" + AttemptNumber + ",DelaySinceFirstAttempt=" + DelaySinceFirstAttempt + ",result=" + result+ ",exceptionCause=" + exceptionCause);
+//                        if(null != attempt.getExceptionCause())
+//                            exceptionCause = attempt.getExceptionCause();
+                        System.out.println(df.format(new Date())+"  AttemptNumber=" + AttemptNumber + ",DelaySinceFirstAttempt=" + DelaySinceFirstAttempt + ",result=" + result+ ",exceptionCause=" + exceptionCause);
                     }
                 })
                 .build();

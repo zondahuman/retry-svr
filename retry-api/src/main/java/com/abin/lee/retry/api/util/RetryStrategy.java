@@ -19,11 +19,11 @@ public class RetryStrategy {
     public static void main(String[] args) throws Exception {
 
         Retryer<Boolean> retryer = RetryerBuilder.<Boolean>newBuilder()
-                .retryIfResult(Predicates.equalTo(Boolean.FALSE))
+                .retryIfResult(Predicates.equalTo(Boolean.TRUE))
                 .retryIfExceptionOfType(IOException.class)
-                .withWaitStrategy(WaitStrategies.exponentialWait(100, 10, TimeUnit.SECONDS))
+                .withWaitStrategy(WaitStrategies.exponentialWait(1000, 30, TimeUnit.SECONDS))
                 .withStopStrategy(StopStrategies.stopAfterAttempt(5))
-                .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(1, TimeUnit.SECONDS))//方法执行时间超过该值，直接抛错
+                .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(5, TimeUnit.SECONDS))//方法执行时间超过该值，直接抛错
                 .withRetryListener(new RetryListener() {
                     @Override
                     public <Boolean> void onRetry(Attempt<Boolean> attempt) {
@@ -33,8 +33,8 @@ public class RetryStrategy {
                         if(null != attempt.getResult())
                             result = attempt.getResult();
                         Throwable exceptionCause = null;
-                        if(null != attempt.getExceptionCause())
-                            exceptionCause = attempt.getExceptionCause();
+//                        if(null != attempt.getExceptionCause())
+//                            exceptionCause = attempt.getExceptionCause();
                         System.out.println("AttemptNumber=" + AttemptNumber + ",DelaySinceFirstAttempt=" + DelaySinceFirstAttempt + ",result=" + result+ ",exceptionCause=" + exceptionCause);
                     }
                 })
