@@ -1,9 +1,8 @@
 package com.abin.lee.retry.api.util;
 
-import com.github.rholder.retry.Retryer;
-import com.github.rholder.retry.RetryerBuilder;
-import com.github.rholder.retry.StopStrategies;
-import com.github.rholder.retry.WaitStrategies;
+import com.github.rholder.retry.*;
+import com.google.common.base.Predicates;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,9 +19,25 @@ public class RetryStrategy {
     public static void main(String[] args) throws Exception {
 
         Retryer<Boolean> retryer = RetryerBuilder.<Boolean>newBuilder()
+                .retryIfResult(Predicates.equalTo(Boolean.FALSE))
                 .retryIfExceptionOfType(IOException.class)
                 .withWaitStrategy(WaitStrategies.exponentialWait(100, 10, TimeUnit.SECONDS))
                 .withStopStrategy(StopStrategies.stopAfterAttempt(5))
+                .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(1, TimeUnit.SECONDS))//方法执行时间超过该值，直接抛错
+                .withRetryListener(new RetryListener() {
+                    @Override
+                    public <Boolean> void onRetry(Attempt<Boolean> attempt) {
+                        long AttemptNumber = attempt.getAttemptNumber();
+                        long DelaySinceFirstAttempt = attempt.getDelaySinceFirstAttempt();
+                        Boolean result = null;
+                        if(null != attempt.getResult())
+                            result = attempt.getResult();
+                        Throwable exceptionCause = null;
+                        if(null != attempt.getExceptionCause())
+                            exceptionCause = attempt.getExceptionCause();
+                        System.out.println("AttemptNumber=" + AttemptNumber + ",DelaySinceFirstAttempt=" + DelaySinceFirstAttempt + ",result=" + result+ ",exceptionCause=" + exceptionCause);
+                    }
+                })
                 .build();
 
         System.out.println("begin..." + df.format(new Date()));
@@ -40,15 +55,14 @@ public class RetryStrategy {
     private static Callable<Boolean> buildTask() {
         return new Callable<Boolean>() {
             private int i = 0;
-
             @Override
             public Boolean call() throws Exception {
                 System.out.println("called");
                 i++;
                 if (i == 1) {
-                    throw new IOException();
+                    return Boolean.TRUE;
                 } else {
-                    throw new NullPointerException();
+                    return Boolean.TRUE;
                 }
             }
         };
