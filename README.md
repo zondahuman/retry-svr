@@ -11,12 +11,15 @@ https://blog.csdn.net/prime7/article/details/49837517
 Retrying Operations in Java
 http://fahdshariff.blogspot.com/2009/08/retrying-operations-in-java.html
 
+java重试工具库: 实现业务逻辑与重试逻辑的解耦
+https://blog.csdn.net/aitangyong/article/details/53840719
 
 
+guava-retrying重试工具库: 什么时候重试
+https://blog.csdn.net/aitangyong/article/details/53886293
 
-
-
-
+guava-retrying重试工具库: 隔多长时间重试
+https://blog.csdn.net/aitangyong/article/details/53889036
 
 
 

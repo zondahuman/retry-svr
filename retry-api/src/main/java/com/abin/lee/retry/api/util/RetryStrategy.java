@@ -21,7 +21,7 @@ public class RetryStrategy {
 
         Retryer<Boolean> retryer = RetryerBuilder.<Boolean>newBuilder()
                 .retryIfExceptionOfType(IOException.class)
-                .withWaitStrategy(WaitStrategies.fixedWait(1, TimeUnit.SECONDS))
+                .withWaitStrategy(WaitStrategies.exponentialWait(100, 10, TimeUnit.SECONDS))
                 .withStopStrategy(StopStrategies.stopAfterAttempt(5))
                 .build();
 
