@@ -34,8 +34,12 @@ public class RetryController {
     @ResponseBody
     public String cost(String taskName) {
         String result = "FAILURE";
-        this.retryService.retryCall(taskName);
-        result = "SUCCESS";
+        try {
+            this.retryService.costRecord(taskName);
+            result = "SUCCESS";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
