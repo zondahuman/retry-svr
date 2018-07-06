@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by abin on 2018/6/27.
  */
 @Controller
-@RequestMapping("/spike")
+@RequestMapping("/retry")
 @Slf4j
 public class RetryController {
     @Autowired
