@@ -33,7 +33,7 @@ public class RetryThreadPoolAsyncTest {
             public void run() {
                 RetryStrategy retryStrategy = new RetryStrategy();
                 try {
-                    retryStrategy.proxy().call(httpTask());
+                    retryStrategy.proxyString().call(httpTask());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -60,13 +60,14 @@ public class RetryThreadPoolAsyncTest {
     }
 
 
-    private static Callable<Boolean> httpTask() {
-        return new Callable<Boolean>() {
+    private static Callable<String> httpTask() {
+        return new Callable<String>() {
             private int i = 0;
+
             @Override
-            public Boolean call() throws Exception {
+            public String call() throws Exception {
                 System.out.println("called");
-                boolean flag = httpCall();
+                String flag = httpCall();
                 return flag;
             }
         };
@@ -75,12 +76,13 @@ public class RetryThreadPoolAsyncTest {
     private static final String httpURL = "http://localhost:8099/retry/cost";
 //    private static final String httpURL = "http://localhost:8099/retry/cost";
 
-    public static Boolean httpCall() {
+    public static String httpCall() {
+        String result = "";
         try {
-            CloseableHttpAsyncClient httpClient = AsyncHttpClientUtil.getHttpAsyncClient();
+            CloseableHttpClient httpClient = HttpClientUtil.getHttpClient();
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 //            nvps.add(new BasicNameValuePair("taskName", "second"));
-            int id = (int)(Math.random()*10000000L);
+            int id = (int) (Math.random() * 10000000L);
             nvps.add(new BasicNameValuePair("taskName", "" + id));
             HttpPost httpPost = new HttpPost(httpURL);
 //            httpPost.setHeader("Cookie", getCookie());
@@ -88,21 +90,17 @@ public class RetryThreadPoolAsyncTest {
 
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
             System.out.println("Executing request: " + httpPost.getRequestLine());
-            Future<HttpResponse> future = httpClient.execute(httpPost, null);
+            HttpResponse response = httpClient.execute(httpPost);
             System.out.println("----------------------------------------");
-            System.out.println(future.get().getStatusLine());
-            System.out.println(EntityUtils.toString(future.get().getEntity()));
-            String result = EntityUtils.toString(future.get().getEntity()) ;
+            System.out.println(response.getStatusLine());
+            System.out.println(EntityUtils.toString(response.getEntity()));
+            result = EntityUtils.toString(response.getEntity());
             System.out.println("async result=================" + result + " ,taskName= " + id);
-            if(StringUtils.equals(result, "SUCCESS")){
-                return Boolean.TRUE;
-            } else {
-                return Boolean.FALSE;
-            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return Boolean.FALSE;
+        return result;
     }
 
 

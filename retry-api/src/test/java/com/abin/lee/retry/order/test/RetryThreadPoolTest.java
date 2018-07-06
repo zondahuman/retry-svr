@@ -32,7 +32,7 @@ public class RetryThreadPoolTest {
             public void run() {
                 RetryStrategy retryStrategy = new RetryStrategy();
                 try {
-                    retryStrategy.proxy().call(httpTask());
+                    retryStrategy.proxyString().call(httpTask());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -59,13 +59,14 @@ public class RetryThreadPoolTest {
     }
 
 
-    private static Callable<Boolean> httpTask() {
-        return new Callable<Boolean>() {
+    private static Callable<String> httpTask() {
+        return new Callable<String>() {
             private int i = 0;
+
             @Override
-            public Boolean call() throws Exception {
+            public String call() throws Exception {
                 System.out.println("called");
-                boolean flag = httpCall();
+                String flag = httpCall();
                 return flag;
             }
         };
@@ -74,12 +75,13 @@ public class RetryThreadPoolTest {
     private static final String httpURL = "http://localhost:8099/retry/cost";
 //    private static final String httpURL = "http://localhost:8099/retry/cost";
 
-    public static Boolean httpCall() {
+    public static String httpCall() {
+        String result = "";
         try {
             CloseableHttpClient httpClient = HttpClientUtil.getHttpClient();
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 //            nvps.add(new BasicNameValuePair("taskName", "second"));
-            int id = (int)(Math.random()*10000000L);
+            int id = (int) (Math.random() * 10000000L);
             nvps.add(new BasicNameValuePair("taskName", "" + id));
             HttpPost httpPost = new HttpPost(httpURL);
 //            httpPost.setHeader("Cookie", getCookie());
@@ -91,18 +93,14 @@ public class RetryThreadPoolTest {
             System.out.println("----------------------------------------");
             System.out.println(response.getStatusLine());
             System.out.println(EntityUtils.toString(response.getEntity()));
-            String result = EntityUtils.toString(response.getEntity()) ;
-            if(StringUtils.equals(result, "SUCCESS")){
-                return Boolean.TRUE;
-            } else {
-                return Boolean.FALSE;
-            }
+            result = EntityUtils.toString(response.getEntity());
+            System.out.println("sync result=================" + result + " ,taskName= " + id);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return Boolean.FALSE;
+        return result;
     }
-
 
 
 
