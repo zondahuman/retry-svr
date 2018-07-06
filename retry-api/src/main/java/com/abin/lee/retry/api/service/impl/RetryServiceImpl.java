@@ -14,24 +14,10 @@ public class RetryServiceImpl implements RetryService {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public void costRecord(String taskName) throws InterruptedException {
+        Thread.sleep(5000L);
+    }
 
 
 

@@ -30,13 +30,14 @@ public class RetryController {
         return result;
     }
 
-
-
-
-
-
-
-
+    @RequestMapping(value = "/cost")
+    @ResponseBody
+    public String cost(String taskName) {
+        String result = "FAILURE";
+        this.retryService.retryCall(taskName);
+        result = "SUCCESS";
+        return result;
+    }
 
 
 }
