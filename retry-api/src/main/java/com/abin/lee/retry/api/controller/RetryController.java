@@ -30,18 +30,33 @@ public class RetryController {
         return result;
     }
 
-    @RequestMapping(value = "/cost")
+    @RequestMapping(value = "/costNoTimeOut")
     @ResponseBody
-    public String cost(String taskName) {
+    public String costNoTimeOut(String taskName) {
         String result = "FAILURE";
         try {
-            this.retryService.costRecord(taskName);
+            this.retryService.costNoTimeOut(taskName);
             result = "SUCCESS";
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return result;
     }
+
+
+    @RequestMapping(value = "/costTimeOut")
+    @ResponseBody
+    public String costTimeOut(String taskName) {
+        String result = "FAILURE";
+        try {
+            this.retryService.costTimeOut(taskName);
+            result = "SUCCESS";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
 
 }

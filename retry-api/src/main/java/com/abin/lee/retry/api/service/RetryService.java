@@ -7,7 +7,8 @@ public interface RetryService {
 
     void retryCall(String taskName);
 
-    void costRecord(String taskName) throws InterruptedException;
+    void costTimeOut(String taskName) throws InterruptedException;
+    void costNoTimeOut(String taskName) throws InterruptedException;
 
 
 

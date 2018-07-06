@@ -25,6 +25,7 @@ public class CostHttpTest {
 
     @Test
     public void testCostHttp() {
+        String result = "";
         try {
             CloseableHttpClient httpClient = HttpClientUtil.getHttpClient();
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -39,9 +40,9 @@ public class CostHttpTest {
             System.out.println("Executing request: " + httpPost.getRequestLine());
             HttpResponse response = httpClient.execute(httpPost);
             System.out.println("----------------------------------------");
-            System.out.println(response.getStatusLine());
-            System.out.println(EntityUtils.toString(response.getEntity()));
-            String result = EntityUtils.toString(response.getEntity()) ;
+//            System.out.println(response.getStatusLine());
+//            System.out.println(EntityUtils.toString(response.getEntity()));
+            result = EntityUtils.toString(response.getEntity()) ;
             System.out.println("async result=================" + result);
 
         } catch (Exception ex) {

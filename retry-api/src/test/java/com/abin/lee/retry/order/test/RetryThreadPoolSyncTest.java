@@ -71,8 +71,8 @@ public class RetryThreadPoolSyncTest {
         };
     }
 
-    private static final String httpURL = "http://localhost:8099/retry/cost";
-//    private static final String httpURL = "http://localhost:8099/retry/cost";
+    private static final String httpURL = "http://localhost:8099/retry/costTimeOut";
+//    private static final String httpURL = "http://localhost:8099/retry/costNoTimeOut";
 
     public static String httpCall() {
         String result = "";

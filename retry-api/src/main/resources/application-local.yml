@@ -19,7 +19,7 @@ logging:
 
 
 # true false
-debug: true
+debug: false
 
 
 
