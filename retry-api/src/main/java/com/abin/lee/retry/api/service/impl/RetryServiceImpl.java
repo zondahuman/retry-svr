@@ -18,7 +18,9 @@ public class RetryServiceImpl implements RetryService {
     @Override
     public void costTimeOut(String taskName) throws InterruptedException {
         System.out.println("costTimeOut--start---Time =" + DateUtil.getYMDHMSTime() + " , taskName=" + taskName);
-//        Thread.sleep(2000L);
+//        Thread.sleep(5000L);
+        if(true)
+            throw new RuntimeException("this is a exception.................................");
         System.out.println("costTimeOut--end---Time =" + DateUtil.getYMDHMSTime() + " , taskName=" + taskName);
 
     }
@@ -26,7 +28,7 @@ public class RetryServiceImpl implements RetryService {
     @Override
     public void costNoTimeOut(String taskName) throws InterruptedException {
         System.out.println("costNoTimeOut--start---Time =" + DateUtil.getYMDHMSTime() + " , taskName=" + taskName);
-        Thread.sleep(2000L);
+//        Thread.sleep(5000L);
         System.out.println("costNoTimeOut--end---Time =" + DateUtil.getYMDHMSTime() + " , taskName=" + taskName);
 
     }

@@ -33,28 +33,13 @@ public class RetryThreadPoolSyncTest {
                     retryStrategy.proxyString().call(httpTask());
                 } catch (Exception e) {
                     e.printStackTrace();
+                }finally {
+//                    retryStrategy.proxyString().
                 }
             }
         });
 
 
-    }
-
-    private static Callable<Boolean> buildTask() {
-        return new Callable<Boolean>() {
-            private int i = 0;
-
-            @Override
-            public Boolean call() throws Exception {
-                System.out.println("called");
-                i++;
-                if (i == 1) {
-                    return Boolean.TRUE;
-                } else {
-                    return Boolean.TRUE;
-                }
-            }
-        };
     }
 
 
@@ -65,7 +50,7 @@ public class RetryThreadPoolSyncTest {
             @Override
             public String call() throws Exception {
                 System.out.println("called");
-                String flag = httpCall();
+                String flag = httpCallNoTimeOut();
                 return flag;
             }
         };
@@ -74,7 +59,7 @@ public class RetryThreadPoolSyncTest {
     private static final String httpURL = "http://localhost:8099/retry/costTimeOut";
 //    private static final String httpURL = "http://localhost:8099/retry/costNoTimeOut";
 
-    public static String httpCall() {
+    public static String httpCallNoTimeOut() {
         String result = "";
         try {
             CloseableHttpClient httpClient = HttpClientUtil.getHttpClient();
@@ -90,8 +75,8 @@ public class RetryThreadPoolSyncTest {
             System.out.println("Executing request: " + httpPost.getRequestLine());
             HttpResponse response = httpClient.execute(httpPost);
             System.out.println("----------------------------------------");
-            System.out.println(response.getStatusLine());
-            System.out.println(EntityUtils.toString(response.getEntity()));
+//            System.out.println(response.getStatusLine());
+//            System.out.println(EntityUtils.toString(response.getEntity()));
             result = EntityUtils.toString(response.getEntity());
             System.out.println("sync result=================" + result + " ,taskName= " + id);
 
@@ -101,5 +86,32 @@ public class RetryThreadPoolSyncTest {
         return result;
     }
 
+
+    public static String httpCallTimeOut() {
+        String result = "";
+        try {
+            CloseableHttpClient httpClient = HttpClientUtil.getHttpClient();
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+//            nvps.add(new BasicNameValuePair("taskName", "second"));
+            int id = (int) (Math.random() * 10000000L);
+            nvps.add(new BasicNameValuePair("taskName", "" + id));
+            HttpPost httpPost = new HttpPost(httpURL);
+//            httpPost.setHeader("Cookie", getCookie());
+//            httpPost.setHeader("Cookie", "JSESSIONID=7588C522A6900BFD581AA18FDA64D347");
+
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
+            System.out.println("Executing request: " + httpPost.getRequestLine());
+            HttpResponse response = httpClient.execute(httpPost);
+            System.out.println("----------------------------------------");
+//            System.out.println(response.getStatusLine());
+//            System.out.println(EntityUtils.toString(response.getEntity()));
+            result = EntityUtils.toString(response.getEntity());
+            System.out.println("sync result=================" + result + " ,taskName= " + id);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
 
 }
