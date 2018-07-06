@@ -93,7 +93,7 @@ public class RetryThreadPoolAsyncTest {
             System.out.println(future.get().getStatusLine());
             System.out.println(EntityUtils.toString(future.get().getEntity()));
             String result = EntityUtils.toString(future.get().getEntity()) ;
-            System.out.println("async result=================" + result);
+            System.out.println("async result=================" + result + " ,taskName= " + id);
             if(StringUtils.equals(result, "SUCCESS")){
                 return Boolean.TRUE;
             } else {

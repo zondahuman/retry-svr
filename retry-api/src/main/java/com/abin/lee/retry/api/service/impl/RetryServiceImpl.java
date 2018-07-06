@@ -18,7 +18,7 @@ public class RetryServiceImpl implements RetryService {
     @Override
     public void costRecord(String taskName) throws InterruptedException {
         System.out.println("start---Time =" + DateUtil.getYMDHMSTime() + " , taskName=" + taskName);
-        Thread.sleep(5000L);
+        Thread.sleep(2000L);
         System.out.println("end---Time =" + DateUtil.getYMDHMSTime() + " , taskName=" + taskName);
 
     }
