@@ -71,6 +71,7 @@ public class RetryThreadPoolAsyncTest {
         int id = (int) (Math.random() * 10000000L);
         try {
             CloseableHttpAsyncClient httpClient = AsyncHttpClientUtil.getHttpAsyncClient();
+            httpClient.start();
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 //            nvps.add(new BasicNameValuePair("taskName", "second"));
 //            int id = (int) (Math.random() * 10000000L);
@@ -100,6 +101,7 @@ public class RetryThreadPoolAsyncTest {
         int id = (int) (Math.random() * 10000000L);
         try {
             CloseableHttpAsyncClient httpClient = AsyncHttpClientUtil.getHttpAsyncClient();
+            httpClient.start();
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 //            nvps.add(new BasicNameValuePair("taskName", "second"));
 //            int id = (int) (Math.random() * 10000000L);

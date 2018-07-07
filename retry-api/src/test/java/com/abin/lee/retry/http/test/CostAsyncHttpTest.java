@@ -23,8 +23,8 @@ import java.util.concurrent.Future;
  */
 public class CostAsyncHttpTest {
 
-    private static final String httpURL = "http://localhost:8099/retry/cost";
-//    private static final String httpURL = "http://localhost:8099/retry/cost";
+//    private static final String httpURL = "http://localhost:8099/retry/costTimeOut";
+    private static final String httpURL = "http://localhost:8099/retry/costNoTimeOut";
 
     @Test
     public void testCostHttp() {
@@ -32,6 +32,7 @@ public class CostAsyncHttpTest {
         int id = (int) (Math.random() * 10000000L);
         try {
             CloseableHttpAsyncClient httpClient = AsyncHttpClientUtil.getHttpAsyncClient();
+            httpClient.start();
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 //            nvps.add(new BasicNameValuePair("taskName", "second"));
 //            int id = (int) (Math.random() * 10000000L);
