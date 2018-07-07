@@ -1,8 +1,10 @@
 package com.abin.lee.retry.api.util;
 
 import com.github.rholder.retry.*;
+import com.google.common.base.Predicate;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -44,8 +46,18 @@ public class RetryStrategy {
     public Retryer<String> proxyString() throws Exception {
         Retryer<String> retryer = RetryerBuilder.<String>newBuilder()
 //                .retryIfResult(Predicates.equalTo(false))
-                .retryIfResult(result -> StringUtils.equals(result, "FAILURE"))
-                .retryIfExceptionOfType(RuntimeException.class)
+//                .retryIfResult(result -> StringUtils.equals(result, "FAILURE"))
+                .retryIfResult(new Predicate<String>() {
+                    @Override
+                    public boolean apply(@Nullable String input) {
+                        return StringUtils.equals(input, "FAILURE");
+                    }
+                })
+                .retryIfException()
+                .retryIfRuntimeException()
+                .retryIfExceptionOfType(RetryHttpException.class)
+                .retryIfExceptionOfType(Throwable.class)
+                .retryIfExceptionOfType(Exception.class)
 //                .withWaitStrategy(WaitStrategies.exponentialWait(1000, 30, TimeUnit.SECONDS))//multiplier单位固定是ms，maximumTime最大等待时间
                 .withWaitStrategy(WaitStrategies.fixedWait(3, TimeUnit.SECONDS))//multiplier单位固定是ms，maximumTime最大等待时间
                 .withStopStrategy(StopStrategies.stopAfterAttempt(4))

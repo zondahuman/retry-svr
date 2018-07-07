@@ -1,6 +1,7 @@
 package com.abin.lee.retry.api.controller;
 
 import com.abin.lee.retry.api.service.RetryService;
+import com.abin.lee.retry.api.util.RetryHttpException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,13 +47,14 @@ public class RetryController {
 
     @RequestMapping(value = "/costTimeOut")
     @ResponseBody
-    public String costTimeOut(String taskName) {
+    public String costTimeOut(String taskName) throws RetryHttpException {
         String result = "FAILURE";
         try {
             this.retryService.costTimeOut(taskName);
             result = "SUCCESS";
         } catch (InterruptedException e) {
             e.printStackTrace();
+            throw new RetryHttpException("RetryController---costTimeOut--taskName:" + taskName + "  ,e=" + e);
         }
         return result;
     }
