@@ -1,15 +1,12 @@
 package com.abin.lee.retry.http.test;
 
-import com.abin.lee.retry.api.util.RetryHttpException;
 import com.abin.lee.retry.common.util.AsyncHttpClientUtil;
-import com.abin.lee.retry.common.util.HttpClientUtil;
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.concurrent.FutureCallback;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -25,7 +22,7 @@ import java.util.concurrent.Future;
  */
 public class CostAsyncHttpTest {
 
-//    private static final String httpURL = "http://localhost:8099/retry/costTimeOut";
+    //    private static final String httpURL = "http://localhost:8099/retry/costTimeOut";
     private static final String httpURL = "http://localhost:8099/retry/costNoTimeOut";
 
     @Test
@@ -84,7 +81,7 @@ public class CostAsyncHttpTest {
         }
     }
 
-    public static class HttpCallAsyncResponse implements FutureCallback<HttpResponse>{
+    public static class HttpCallAsyncResponse implements FutureCallback<HttpResponse> {
         @Override
         public void completed(HttpResponse result) {
             String resulter = null;
@@ -92,7 +89,8 @@ public class CostAsyncHttpTest {
                 resulter = EntityUtils.toString(result.getEntity());
             } catch (IOException e) {
                 e.printStackTrace();
-            } ;
+            }
+            ;
             System.out.println("HttpCallAsyncResponse--resulter=" + resulter);
         }
 
@@ -107,7 +105,6 @@ public class CostAsyncHttpTest {
 
         }
     }
-
 
 
 }

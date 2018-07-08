@@ -1,7 +1,6 @@
 package com.abin.lee.retry.http.test;
 
 import com.abin.lee.retry.common.util.HttpClientUtil;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -30,7 +29,7 @@ public class CostHttpTest {
             CloseableHttpClient httpClient = HttpClientUtil.getHttpClient();
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 //            nvps.add(new BasicNameValuePair("taskName", "second"));
-            int id = (int)(Math.random()*10000000L);
+            int id = (int) (Math.random() * 10000000L);
             nvps.add(new BasicNameValuePair("taskName", "" + id));
             HttpPost httpPost = new HttpPost(httpURL);
 //            httpPost.setHeader("Cookie", getCookie());
@@ -42,7 +41,7 @@ public class CostHttpTest {
             System.out.println("----------------------------------------");
 //            System.out.println(response.getStatusLine());
 //            System.out.println(EntityUtils.toString(response.getEntity()));
-            result = EntityUtils.toString(response.getEntity()) ;
+            result = EntityUtils.toString(response.getEntity());
             System.out.println("async result=================" + result);
 
         } catch (Exception ex) {
@@ -50,8 +49,6 @@ public class CostHttpTest {
         }
 
     }
-
-
 
 
 }
