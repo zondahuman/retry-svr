@@ -27,7 +27,7 @@ https://blog.csdn.net/aitangyong/article/details/53889036
 1、线程池+http同步调用，使用retry没啥问题，预期一样
 2、线程池+http异步调用，使用retry没啥问题，预期一样
 3、retry+http同步调用，，使用retry没啥问题，预期一样
-3、retry+http同步调用，，使用retry没啥问题，预期一样
+3、retry+http异步调用，，使用retry没啥问题，预期一样
 
 
 
